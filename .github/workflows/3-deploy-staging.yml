@@ -1,0 +1,27 @@
+name: 3️⃣ Deploy to Staging
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: |
+          pip install -r requirements.txt
+          pip install -e .
+
+      - run: pytest tests/
+
+      - run: echo "🚀 Deployed to staging"
